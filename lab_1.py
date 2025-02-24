@@ -12,6 +12,9 @@ def more(text):
 
 url = input("Δώστε url: ")  # προσδιορισμός του url
 
+if not url.startswith("https://"):
+    url = "https://" + url
+
 
 
 with requests.get(url) as response:  # το αντικείμενο response
