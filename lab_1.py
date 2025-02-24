@@ -1,15 +1,5 @@
 import requests
 
-def more(text):
-    count = 0
-    for line in text.split('\n'):
-        print(line)
-        count += 1
-        if count % 30 == 0:
-            reply = input('Show more (y/n)? ')
-            if reply == 'n':
-                break
-
 url = input("Δώστε url: ")  # προσδιορισμός του url
 
 if not url.startswith("https://"):
@@ -18,5 +8,15 @@ if not url.startswith("https://"):
 
 
 with requests.get(url) as response:  # το αντικείμενο response
-    html = response.text
-    more(html)
+    for key, value in response.headers.items():
+        print(f"{key}: {value}\n")
+    server = response.headers.get("Server", "Unknown")
+    print(f"Server: {server}")
+    cookies = response.cookies
+    if cookies:
+        print("\nΗ σελίδα χρησιμοποιεί cookies.")
+        print("\nCookies:")
+        for cookie in cookies:
+            print(f"Όνομα: {cookie.name}, Διάρκεια: {cookie.expires if cookie.expires else 'Άγνωστη'}")
+    else:
+        print("\nΗ σελίδα δεν χρησιμοποιεί cookies.")
